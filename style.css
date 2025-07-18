@@ -1,0 +1,63 @@
+/* style.css */
+:root {
+    --cor-primaria: #ef7e24;
+    --cor-secundaria: #fefefe;
+    --cinza-claro: #e0e0e0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    padding: 2rem;
+    max-width: 600px;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+h2,
+h3 {
+    color: var(--cor-primaria);
+}
+
+form {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: var(--cor-primaria);
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #d56d1e;
+}
+
+.jogador {
+    background-color: white;
+    padding: 1rem;
+    border-left: 4px solid var(--cor-primaria);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.erro {
+    color: red;
+    margin-top: 10px;
+}
