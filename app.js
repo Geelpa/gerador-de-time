@@ -1,75 +1,87 @@
-const form = document.getElementById("formJogador");
-const lista = document.getElementById("listaJogadores");
-const erroMsg = document.createElement("div");
-erroMsg.classList.add("erro");
-form.appendChild(erroMsg);
+const listaJogadores = document.getElementById('lista-jogadores');
+const form = document.getElementById('form-jogador');
+let editandoId = null;
 
-form.addEventListener("submit", async (e) => {
+// Salvar novo ou atualizar jogador
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    erroMsg.textContent = ""; // limpa erro anterior
 
-    const nome = document.getElementById("nome").value.trim();
-    const ataque = parseFloat(document.getElementById("ataque").value);
-    const defesa = parseFloat(document.getElementById("defesa").value);
-    const vigor = parseFloat(document.getElementById("vigor").value);
+    const nome = form.nome.value.trim();
+    const ataque = parseFloat(form.ataque.value);
+    const defesa = parseFloat(form.defesa.value);
+    const vigor = parseFloat(form.vigor.value);
 
-    if (!nome || isNaN(ataque) || isNaN(defesa) || isNaN(vigor)) {
-        erroMsg.textContent = "Preencha todos os campos corretamente.";
-        return;
-    }
-
-    if ([ataque, defesa, vigor].some(n => n < 0 || n > 10)) {
-        erroMsg.textContent = "As notas devem estar entre 0 e 10.";
-        return;
-    }
+    const media = ((ataque + defesa + vigor) / 3).toFixed(2);
+    const jogador = { nome, ataque, defesa, vigor, media };
 
     try {
-        const jogador = criarJogador(nome, ataque, defesa, vigor);
-        firebase.firestore().collection("jogadores").add(jogador)
-            .then(() => {
-                console.log("Jogador salvo com sucesso!");
-                form.reset();
-                carregarJogadores();
-            })
-            .catch((error) => {
-                console.error("Erro ao salvar jogador:", error);
-            });
+        const db = firebase.firestore();
 
+        if (editandoId) {
+            await db.collection('jogadores').doc(editandoId).update(jogador);
+            editandoId = null;
+        } else {
+            await db.collection('jogadores').add(jogador);
+        }
 
         form.reset();
         carregarJogadores();
-    } catch (erro) {
-        console.error("Erro ao salvar jogador:", erro);
-        erroMsg.textContent = "Erro ao salvar jogador. Veja o console.";
+    } catch (error) {
+        console.error("Erro ao salvar jogador:", error);
     }
 });
 
+// Carregar jogadores
 async function carregarJogadores() {
-    lista.innerHTML = "<em>Carregando jogadores...</em>";
+    listaJogadores.innerHTML = '';
+    const db = firebase.firestore();
 
     try {
-        const snapshot = await db.collection("jogadores").orderBy("media", "desc").get();
-        lista.innerHTML = "";
-
-        if (snapshot.empty) {
-            lista.innerHTML = "<p>Nenhum jogador cadastrado ainda.</p>";
-            return;
-        }
+        const snapshot = await db.collection('jogadores').get();
 
         snapshot.forEach(doc => {
-            const j = doc.data();
-            lista.innerHTML += `
-          <div class="jogador">
-            <strong>${j.nome}</strong><br>
-            Ataque: ${j.ataque}, Defesa: ${j.defesa}, Vigor: ${j.vigor}<br>
-            Média: <strong>${j.media}</strong>
-          </div>
-        `;
+            const jogador = doc.data();
+            const li = document.createElement('li');
+
+            li.innerHTML = `
+        <strong>${jogador.nome}</strong><br>
+        Ataque: ${jogador.ataque} |
+        Defesa: ${jogador.defesa} |
+        Vigor: ${jogador.vigor} |
+        <strong>Média: ${jogador.media}</strong><br>
+        <button onclick="editarJogador('${doc.id}', ${jogador.ataque}, ${jogador.defesa}, ${jogador.vigor}, '${jogador.nome}')">✏️ Editar</button>
+        <button onclick="excluirJogador('${doc.id}')">🗑️ Excluir</button>
+      `;
+
+            listaJogadores.appendChild(li);
         });
-    } catch (erro) {
-        console.error("Erro ao carregar jogadores:", erro);
-        lista.innerHTML = "<p style='color:red;'>Erro ao carregar jogadores.</p>";
+    } catch (error) {
+        console.error("Erro ao carregar jogadores:", error);
     }
 }
 
-carregarJogadores();
+// Função editar
+function editarJogador(id, ataque, defesa, vigor, nome) {
+    form.nome.value = nome;
+    form.ataque.value = ataque;
+    form.defesa.value = defesa;
+    form.vigor.value = vigor;
+    editandoId = id;
+    window.scrollTo(0, 0);
+}
+
+// Função excluir
+async function excluirJogador(id) {
+    if (confirm('Tem certeza que deseja excluir este jogador?')) {
+        try {
+            const db = firebase.firestore();
+            await db.collection('jogadores').doc(id).delete();
+            carregarJogadores();
+        } catch (error) {
+            console.error("Erro ao excluir jogador:", error);
+        }
+    }
+}
+
+// Inicial
+document.addEventListener('DOMContentLoaded', carregarJogadores);

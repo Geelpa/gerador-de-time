@@ -9,17 +9,16 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    line-height: 1.6;
-    padding: 20px;
+    padding: 16px;
 }
 
 /* Container principal */
 .container {
     max-width: 480px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 12px;
     background: #fff;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -35,11 +34,15 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 6px;
+}
+
+#form-jogadores {
+    margin-top: 16px;
 }
 
 input {
-    padding: 14px;
+    padding: 12px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -54,14 +57,14 @@ input:focus {
 }
 
 button {
-    padding: 14px;
-    font-size: 1rem;
+    padding: 8px;
+    font-size: .85rem;
     background-color: #ef7e24;
     color: #fff;
     border: none;
-    border-radius: 10px;
-    font-weight: bold;
+    border-radius: 8px;
     cursor: pointer;
+    margin-top: 6px;
     transition: background 0.2s ease-in-out;
 }
 
@@ -70,29 +73,24 @@ button:hover {
 }
 
 /* Lista de jogadores */
-.lista-jogadores {
-    margin-top: 32px;
+#lista-jogadores {
+    margin-top: 16px;
     list-style: none;
-    padding: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.lista-jogadores li {
+#lista-jogadores li {
     background-color: #f5f5f5;
     border: 1px solid #ddd;
-    border-left: 5px solid #ef7e24;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 12px;
-    transition: transform 0.2s ease;
+    border-radius: 8px;
+    padding: 8px;
 }
 
-.lista-jogadores li:hover {
-    transform: scale(1.02);
-}
-
-.lista-jogadores strong {
+#lista-jogadores strong {
     color: #ef7e24;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin: 8px 0;
 }
 
 /* Mensagem de erro */

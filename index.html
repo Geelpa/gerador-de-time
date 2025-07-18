@@ -9,17 +9,21 @@
 </head>
 
 <body>
-    <h2>Cadastro de Jogador</h2>
-    <form id="formJogador">
-        <input type="text" id="nome" placeholder="Nome do Jogador" required>
-        <input type="number" id="ataque" placeholder="Nota de Ataque" required>
-        <input type="number" id="defesa" placeholder="Nota de Defesa" required>
-        <input type="number" id="vigor" placeholder="Nota de Vigor" required>
+    <form id="form-jogador">
+        <h2>Cadastro de Jogador</h2>
+
+        <input type="text" name="nome" placeholder="Nome do jogador" required>
+        <input type="number" name="ataque" placeholder="Ataque" required>
+        <input type="number" name="defesa" placeholder="Defesa" required>
+        <input type="number" name="vigor" placeholder="Vigor" required>
         <button type="submit">Salvar Jogador</button>
     </form>
 
-    <h3>Lista de Jogadores</h3>
-    <div id="listaJogadores"></div>
+    <div id="form-jogadores">
+        <h3>Lista de Jogadores</h3>
+        <div id="lista-jogadores"></div>
+    </div>
+
     <!-- Firebase (antes de tudo) -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
